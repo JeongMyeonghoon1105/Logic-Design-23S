@@ -1,0 +1,42 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/DMux8Way.hdl
+
+/**
+ * 8-way demultiplexor:
+ * {a, b, c, d, e, f, g, h} = {in, 0, 0, 0, 0, 0, 0, 0} if sel == 000
+ *                            {0, in, 0, 0, 0, 0, 0, 0} if sel == 001
+ *                            etc.
+ *                            {0, 0, 0, 0, 0, 0, 0, in} if sel == 111
+ */
+
+CHIP DMux8Way {
+    IN in, sel[3];
+    OUT a, b, c, d, e, f, g, h;
+
+    PARTS:
+    // Put your code here:
+    DMux(in=in, sel=sel[2], a=p, b=q);
+
+    DMux(in=p, sel=sel[1], a=x, b=y);
+    DMux(in=q, sel=sel[1], a=z, b=w);
+
+    DMux(in=x, sel=sel[0], a=a, b=b);
+    DMux(in=y, sel=sel[0], a=c, b=d);
+    DMux(in=z, sel=sel[0], a=e, b=f);
+    DMux(in=w, sel=sel[0], a=g, b=h);
+}
+
+/* 
+Truth Table이 너무 커져 사용하기 부담스러운 시점
+sel[2] 기준으로 p(a 또는 b 또는 c 또는 d), q(e 또는 f 또는 g 또는 h)로 찢기
+DMux4Way의 절차를 p, q에 각각 진행
+    * sel[1] 값에 따라 p를 x(a 또는 b)와 y(c 또는 d)로 찢기
+    * sel[0] 값에 따라 x를 a와 b로 찢기
+    * sel[0] 값에 따라 y를 c와 d로 찢기
+    
+    * sel[1] 값에 따라 q를 z(e 또는 f)와 w(g 또는 h)로 찢기
+    * sel[0] 값에 따라 z를 e와 f로 찢기
+    * sel[0] 값에 따라 w를 g와 h로 찢기
+*/

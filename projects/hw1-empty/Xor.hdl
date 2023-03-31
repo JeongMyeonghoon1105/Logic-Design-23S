@@ -1,0 +1,30 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/Xor.hdl
+
+/**
+ * Exclusive-or gate:
+ * out = not (a == b)
+ */
+
+CHIP Xor {
+    IN a, b;
+    OUT out;
+
+    PARTS:
+    // Put your code here:
+    Nor(a=a, b=a, out=nota);
+    Nor(a=b, b=b, out=notb);
+    Nor(a=nota, b=notb, out=x);
+    Nor(a=a, b=b, out=y);
+    Nor(a=x, b=y, out=out);
+}
+/*
+Process:
+(~a + ~b) * (a + b)             // Get boolean expression of XOR using Product of Maxterms
+= ~(~((~a + ~b) * (a + b)))     // Use double negation
+= ~(~(~a + ~b) + ~(a + b))      // Use De Morgan's law
+= ~(Nor(~a, ~b) + Nor(a, b))
+= Nor(Nor(~a, ~b), Nor(a, b))
+*/
